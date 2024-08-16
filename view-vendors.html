@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Vendors</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 50px auto;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .section {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        .button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>View Vendors</h1>
+        <div class="section">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Vendor Name</th>
+                        <th>Role</th>
+                        <th>Subscription Start Date</th>
+                        <th>Subscription End Date</th>
+                        <th>Days Left</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="vendorTableBody">
+                    <!-- Vendor rows will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function calculateDaysLeft(endDate) {
+            const today = new Date();
+            const end = new Date(endDate);
+            const diffTime = end - today;
+            return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        }
+
+        function loadVendors() {
+            const vendors = JSON.parse(localStorage.getItem('vendors')) || [];
+            const tableBody = document.getElementById('vendorTableBody');
+
+            tableBody.innerHTML = ''; // Clear existing rows
+
+            vendors.forEach(vendor => {
+                const startDate = new Date(vendor.subscriptionDate);
+                const endDate = new Date(startDate);
+                endDate.setDate(startDate.getDate() + vendor.subscriptionDays);
+
+                const daysLeft = calculateDaysLeft(endDate);
+                const isExpired = daysLeft < 0 ? 'Expired' : `${daysLeft} days`;
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${vendor.name}</td>
+                    <td>${vendor.role}</td>
+                    <td>${vendor.subscriptionDate}</td>
+                    <td>${endDate.toISOString().split('T')[0]}</td>
+                    <td>${isExpired}</td>
+                    <td>
+                        <a class="button" href="renew-subscription.html?vendorName=${encodeURIComponent(vendor.name)}&subscriptionDays=${vendor.subscriptionDays}">Renew</a>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', loadVendors);
+    </script>
+</body>
+</html>

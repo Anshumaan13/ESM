@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Initialize Local Storage</title>
+</head>
+<body>
+    <script>
+        const vendors = [
+    { name: 'Catering', role: 'Catering', subscriptionDate: '2024-08-01', subscriptionDays: 30 },
+    { name: 'Decorations', role: 'Decorations', subscriptionDate: '2024-08-15', subscriptionDays: 30 },
+    { name: 'Florist', role: 'Florist', subscriptionDate: '2024-08-20', subscriptionDays: 30 },
+    { name: 'Lighting', role: 'Lighting', subscriptionDate: '2024-08-25', subscriptionDays: 30 }
+];
+localStorage.setItem('vendors', JSON.stringify(vendors));
+
+const vendorItems = {
+    catering: [
+        { name: 'Buffet Table', price: 100, status: 'Available' },
+        { name: 'Coffee Station', price: 50, status: 'Available' }
+    ],
+    decorations: [
+        { name: 'Flower Arrangements', price: 30, status: 'Available' },
+        { name: 'Lighting', price: 40, status: 'Available' }
+    ],
+    florist: [
+        { name: 'Rose Bouquet', price: 20, status: 'Available' },
+        { name: 'Tulip Vase', price: 25, status: 'Available' }
+    ],
+    lighting: [
+        { name: 'LED Lights', price: 15, status: 'Available' },
+        { name: 'Spotlights', price: 50, status: 'Available' }
+    ]
+};
+
+localStorage.setItem('items', JSON.stringify(vendorItems));
+
+
+        // Optionally, verify by logging to the console
+        console.log('Vendors data initialized:', JSON.parse(localStorage.getItem('vendors')));
+    </script>
+</body>
+</html>

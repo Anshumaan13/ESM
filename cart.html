@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .cart-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #fff;
+        }
+
+        .cart-item div {
+            margin-bottom: 5px;
+        }
+
+        .cart-item button {
+            padding: 5px 10px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cart-item button:hover {
+            background-color: #555;
+        }
+
+        .cart-item select {
+            margin: 5px 0;
+        }
+
+        .total-amount {
+            text-align: right;
+            font-weight: bold;
+        }
+
+        .checkout-button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .checkout-button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Your Cart</h1>
+    <div id="cartList"></div>
+    <div class="total-amount" id="totalAmount">Total Amount: $0.00</div>
+    <button class="checkout-button" onclick="proceedToCheckout()">Proceed to Checkout</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cartList = document.getElementById('cartList');
+            const totalAmountElement = document.getElementById('totalAmount');
+
+            const loadCart = () => {
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                cartList.innerHTML = ''; // Clear the list before loading
+
+                let totalAmount = 0;
+
+                cart.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'cart-item';
+                    itemElement.innerHTML = `
+                        <div>Name: ${item.name}</div>
+                        <div>Price: $${item.price}</div>
+                        <div>
+                            Quantity: 
+                            <select onchange="updateQuantity('${item.name}', this.value)">
+                                ${[...Array(10).keys()].map(i => `<option value="${i + 1}" ${i + 1 === item.quantity ? 'selected' : ''}>${i + 1}</option>`).join('')}
+                            </select>
+                        </div>
+                        <button onclick="removeFromCart('${item.name}')">Remove</button>
+                    `;
+                    cartList.appendChild(itemElement);
+
+                    totalAmount += item.price * item.quantity;
+                });
+
+                totalAmountElement.textContent = `Total Amount: $${totalAmount.toFixed(2)}`;
+            };
+
+            window.removeFromCart = function(itemName) {
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const updatedCart = cart.filter(item => item.name !== itemName);
+                localStorage.setItem('cart', JSON.stringify(updatedCart));
+
+                // Reload cart items
+                loadCart();
+            };
+
+            window.updateQuantity = function(itemName, newQuantity) {
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const item = cart.find(item => item.name === itemName);
+
+                if (item) {
+                    item.quantity = parseInt(newQuantity, 10);
+                    localStorage.setItem('cart', JSON.stringify(cart));
+
+                    // Reload cart items
+                    loadCart();
+                }
+            };
+
+            window.proceedToCheckout = function() {
+                window.location.href = 'checkout.html';
+            };
+
+            loadCart(); // Initial load
+        });
+    </script>
+</body>
+</html>

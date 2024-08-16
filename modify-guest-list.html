@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modify Guest List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 50px auto;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .form-group input, .form-group button {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+        }
+
+        .form-group input[type="text"], .form-group input[type="email"] {
+            width: calc(100% - 22px); /* Adjust width to account for padding and border */
+        }
+
+        .form-group button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+
+        .guest-list {
+            margin-top: 20px;
+        }
+
+        .guest-list table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .guest-list th, .guest-list td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .guest-list th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .guest-list tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Modify Guest List</h1>
+        <div class="section">
+            <form id="addGuestForm">
+                <div class="form-group">
+                    <label for="guestName">Name:</label>
+                    <input type="text" id="guestName" required>
+                </div>
+                <div class="form-group">
+                    <label for="guestEmail">Email:</label>
+                    <input type="email" id="guestEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="guestPhone">Phone:</label>
+                    <input type="text" id="guestPhone" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Add Guest</button>
+                </div>
+            </form>
+            <a href="user-dashboard.html" class="button">Back to Dashboard</a>
+        </div>
+        <div class="section guest-list">
+            <h2>Current Guest List</h2>
+            <table id="guestListTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Guest list items will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Function to load guest list from localStorage
+        function loadGuestList() {
+            const guestListTableBody = document.querySelector('#guestListTable tbody');
+            const guestList = JSON.parse(localStorage.getItem('guestList')) || [];
+
+            guestListTableBody.innerHTML = ''; // Clear existing rows
+
+            guestList.forEach((guest, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${guest.name}</td>
+                    <td>${guest.email}</td>
+                    <td>${guest.phone}</td>
+                    <td><button onclick="removeGuest(${index})">Remove</button></td>
+                `;
+                guestListTableBody.appendChild(row);
+            });
+        }
+
+        // Function to add a new guest
+        document.getElementById('addGuestForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('guestName').value;
+            const email = document.getElementById('guestEmail').value;
+            const phone = document.getElementById('guestPhone').value;
+
+            const guestList = JSON.parse(localStorage.getItem('guestList')) || [];
+            guestList.push({ name, email, phone });
+            localStorage.setItem('guestList', JSON.stringify(guestList));
+
+            document.getElementById('addGuestForm').reset();
+            loadGuestList();
+        });
+
+        // Function to remove a guest
+        function removeGuest(index) {
+            let guestList = JSON.parse(localStorage.getItem('guestList')) || [];
+            guestList.splice(index, 1);
+            localStorage.setItem('guestList', JSON.stringify(guestList));
+            loadGuestList();
+        }
+
+        // Load guest list on page load
+        document.addEventListener('DOMContentLoaded', loadGuestList);
+    </script>
+</body>
+</html>

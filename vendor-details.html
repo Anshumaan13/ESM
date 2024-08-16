@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .vendor-details {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .vendor-details div {
+            margin-bottom: 10px;
+        }
+
+        .vendor-details span {
+            font-weight: bold;
+        }
+
+        .vendor-details button {
+            padding: 5px 10px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .vendor-details button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Vendor Details</h1>
+    <div id="vendorDetailsContainer"></div>
+    <button onclick="logout()">Logout</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const category = urlParams.get('category');
+            const vendorDetailsContainer = document.getElementById('vendorDetailsContainer');
+            
+            const displayItems = (items) => {
+                vendorDetailsContainer.innerHTML = '';
+                if (items.length === 0) {
+                    vendorDetailsContainer.innerHTML = '<p>No items available.</p>';
+                    return;
+                }
+
+                items.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'vendor-details';
+                    itemElement.innerHTML = `
+                        <div><span>Product Name:</span> ${item.name}</div>
+                        <div><span>Price:</span> ${item.price}</div>
+                        <div><span>Status:</span> ${item.status}</div>
+                        <button onclick="addToCart('${item.name}', ${item.price})">Add to Cart</button>
+                    `;
+                    vendorDetailsContainer.appendChild(itemElement);
+                });
+            };
+
+            const loadVendorDetails = () => {
+                const allItems = JSON.parse(localStorage.getItem('items')) || {};
+                const items = allItems[category] || [];
+                displayItems(items);
+            };
+
+            loadVendorDetails();
+
+            window.addToCart = function(name, price) {
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                cart.push({ name, price, quantity: 1 });
+                localStorage.setItem('cart', JSON.stringify(cart));
+                alert('Item added to cart');
+            };
+
+            window.logout = function() {
+                localStorage.removeItem('loggedInUser');
+                window.location.href = 'index.html';
+            };
+        });
+    </script>
+</body>
+</html>

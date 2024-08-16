@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Status</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Product Status</h1>
+        <div class="product-status-list">
+            <h2>Status of All Products</h2>
+            <ul id="productStatusList"></ul>
+            <a href="logout.html" class="button">Logout</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', loadProductStatus);
+
+        function loadProductStatus() {
+            const items = getItems();
+            const productStatusList = document.getElementById('productStatusList');
+
+            items.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `Name: ${item.name}, Status: ${item.status}`;
+                productStatusList.appendChild(listItem);
+            });
+        }
+
+        function getItems() {
+            const items = localStorage.getItem('items');
+            return items ? JSON.parse(items) : [];
+        }
+    </script>
+</body>
+</html>

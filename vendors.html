@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Options</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .vendor-option {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .vendor-option a {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .vendor-option a:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Select Vendor Type</h1>
+    <div class="vendor-option">
+        <a href="vendor-details.html?category=catering">Catering</a>
+    </div>
+    <div class="vendor-option">
+        <a href="vendor-details.html?category=decorations">Decorations</a>
+    </div>
+    <div class="vendor-option">
+        <a href="vendor-details.html?category=florist">Florist</a>
+    </div>
+    <div class="vendor-option">
+        <a href="vendor-details.html?category=lighting">Lighting</a>
+    </div>
+    <button onclick="logout()">Logout</button>
+
+    <script>
+        function logout() {
+            localStorage.removeItem('loggedInUser');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 50px auto;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .section {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Vendor Dashboard</h1>
+        <div class="section">
+            <h2>Transactions</h2>
+            <table id="transactionTable">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Name</th>
+                        <th>Payment Method</th>
+                        <th>Address</th>
+                        <th>Status</th>
+                        <a href="logout.html" class="button">Logout</a>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Order rows will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Function to load transaction data
+        function loadTransactionData() {
+            const tbody = document.querySelector('#transactionTable tbody');
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+
+            // Check if orders array is empty
+            if (orders.length === 0) {
+                const noDataRow = document.createElement('tr');
+                noDataRow.innerHTML = `<td colspan="5">No transactions available</td>`;
+                tbody.appendChild(noDataRow);
+                return;
+            }
+
+            tbody.innerHTML = ''; // Clear existing rows
+
+            orders.forEach(order => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${order.id}</td>
+                    <td>${order.name}</td>
+                    <td>${order.payment}</td>
+                    <td>${order.address}</td>
+                    <td>${order.status}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Load transaction data on page load
+        document.addEventListener('DOMContentLoaded', loadTransactionData);
+    </script>
+</body>
+</html>

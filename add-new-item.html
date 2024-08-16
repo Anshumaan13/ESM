@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Item</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Add New Item</h1>
+    <form id="addItemForm">
+        <label for="itemName">Name:</label>
+        <input type="text" id="itemName" required>
+        <label for="itemPrice">Price:</label>
+        <input type="number" id="itemPrice" required>
+        <label for="itemQuantity">Quantity:</label>
+        <input type="number" id="itemQuantity" required>
+        <label for="itemStatus">Status:</label>
+        <input type="text" id="itemStatus" required>
+        <button type="submit">Add Item</button>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const itemForm = document.getElementById('addItemForm');
+
+            itemForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const name = document.getElementById('itemName').value;
+                const price = document.getElementById('itemPrice').value;
+                const quantity = document.getElementById('itemQuantity').value;
+                const status = document.getElementById('itemStatus').value;
+
+                const items = JSON.parse(localStorage.getItem('vendorItems')) || [];
+                items.push({ name, price, quantity, status });
+                localStorage.setItem('vendorItems', JSON.stringify(items));
+
+                itemForm.reset(); // Reset the form
+                alert('Item added successfully!');
+            });
+        });
+    </script>
+</body>
+</html>

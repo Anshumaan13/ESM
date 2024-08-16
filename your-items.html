@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Items</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #fff;
+        }
+
+        .item div {
+            margin-bottom: 5px;
+        }
+
+        .item button {
+            padding: 5px 10px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .item button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Your Items</h1>
+    <div id="itemList"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const itemList = document.getElementById('itemList');
+
+            const loadItems = () => {
+                const items = JSON.parse(localStorage.getItem('vendorItems')) || [];
+                itemList.innerHTML = ''; // Clear the list before loading
+
+                items.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'item';
+                    itemElement.innerHTML = `
+                        <div>Name: ${item.name}</div>
+                        <div>Price: $${item.price}</div>
+                        <div>Quantity: ${item.quantity}</div>
+                        <div>Status: ${item.status}</div>
+                        <button onclick="addToCart('${item.name}', ${item.price})">Add to Cart</button>
+                        <button onclick="removeItem('${item.name}')">Remove</button>
+                    `;
+                    itemList.appendChild(itemElement);
+                });
+            };
+
+            loadItems(); // Initial load
+
+            window.removeItem = function(itemName) {
+                const items = JSON.parse(localStorage.getItem('vendorItems')) || [];
+                const updatedItems = items.filter(item => item.name !== itemName);
+                localStorage.setItem('vendorItems', JSON.stringify(updatedItems));
+
+                // Reload items
+                loadItems();
+            };
+
+            window.addToCart = function(itemName, itemPrice) {
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const existingItem = cart.find(item => item.name === itemName);
+
+                if (existingItem) {
+                    existingItem.quantity++;
+                } else {
+                    cart.push({
+                        name: itemName,
+                        price: itemPrice,
+                        quantity: 1
+                    });
+                }
+
+                localStorage.setItem('cart', JSON.stringify(cart));
+                alert('Item added to cart!');
+            };
+        });
+    </script>
+</body>
+</html>

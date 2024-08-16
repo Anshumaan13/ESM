@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Vendor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 60%;
+            margin: 50px auto;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .section {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        .form-group input, .form-group select, .form-group button {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+        }
+        .form-group button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Add Vendor</h1>
+        <div class="section">
+            <form id="addVendorForm">
+                <div class="form-group">
+                    <label for="vendorName">Vendor Name:</label>
+                    <input type="text" id="vendorName" required>
+                </div>
+                <div class="form-group">
+                    <label for="vendorRole">Role:</label>
+                    <select id="vendorRole" required>
+                        <option value="">Select Role</option>
+                        <option value="Catering">Catering</option>
+                        <option value="Decorations">Decorations</option>
+                        <option value="Florist">Florist</option>
+                        <option value="Lighting">Lighting</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Add Vendor</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('addVendorForm');
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const name = document.getElementById('vendorName').value;
+                const role = document.getElementById('vendorRole').value;
+
+                if (!name || !role) {
+                    alert('Please fill in all fields');
+                    return;
+                }
+
+                const vendors = JSON.parse(localStorage.getItem('vendors')) || [];
+                vendors.push({
+                    name: name,
+                    role: role,
+                    subscriptionDate: new Date().toISOString().split('T')[0],
+                    subscriptionDays: 30 // default subscription period
+                });
+
+                localStorage.setItem('vendors', JSON.stringify(vendors));
+                alert('Vendor added successfully!');
+                window.location.href = 'admin-dashboard.html'; // Redirect to admin dashboard
+            });
+        });
+    </script>
+</body>
+</html>

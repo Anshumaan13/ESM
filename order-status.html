@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Status</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .order-status {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .order-status div {
+            margin-bottom: 10px;
+        }
+
+        .order-status span {
+            font-weight: bold;
+        }
+
+        .order-status button {
+            padding: 5px 10px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .order-status button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Order Status</h1>
+    <div id="orderStatusContainer"></div>
+    <button onclick="logout()">Logout</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const orderStatusContainer = document.getElementById('orderStatusContainer');
+
+            const loadOrderStatus = () => {
+                const orders = JSON.parse(localStorage.getItem('orders')) || [];
+                orderStatusContainer.innerHTML = '';
+
+                if (orders.length === 0) {
+                    orderStatusContainer.innerHTML = '<p>No orders found.</p>';
+                    return;
+                }
+
+                orders.forEach(order => {
+                    const orderElement = document.createElement('div');
+                    orderElement.className = 'order-status';
+                    orderElement.innerHTML = `
+                        <div><span>Order ID:</span> ${order.id}</div>
+                        <div><span>Status:</span> ${order.status}</div>
+                        <div><span>Vendor:</span> ${order.vendor}</div>
+                        <div><span>Date:</span> ${order.date}</div>
+                    `;
+                    orderStatusContainer.appendChild(orderElement);
+                });
+            };
+
+            loadOrderStatus();
+
+            window.logout = function() {
+                localStorage.removeItem('loggedInUser');
+                window.location.href = 'index.html';
+            };
+        });
+    </script>
+</body>
+</html>

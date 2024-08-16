@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 300px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 50px auto;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .error {
+            color: red;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Login</h1>
+        <form id="loginForm">
+            <div class="input-group">
+                <input type="text" id="username" placeholder="Username" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" placeholder="Password" required>
+            </div>
+            <button type="submit">Login</button>
+            <div id="error" class="error"></div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const role = urlParams.get('role');
+            
+            if (!role) {
+                window.location.href = 'role-selection.html'; // Redirect to role selection if no role is selected
+            }
+
+            document.getElementById('loginForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const errorDiv = document.getElementById('error');
+
+                errorDiv.textContent = '';
+
+                // Validate credentials based on role
+                if (role === 'admin') {
+                    if (username === 'admin' && password === 'adminpass') {
+                        window.location.href = 'admin-maintenance.html'; // Redirect to maintenance menu for admin
+                    } else {
+                        errorDiv.textContent = 'Invalid credentials!';
+                    }
+                } else if (role === 'user') {
+                    if (username === 'user' && password === 'userpass') {
+                        window.location.href = 'user-dashboard.html'; // Redirect to user dashboard
+                    } else {
+                        errorDiv.textContent = 'Invalid credentials!';
+                    }
+                } else if (role === 'vendor') {
+                    if (username === 'vendor' && password === 'vendorpass') {
+                        window.location.href = 'vendor-dashboard.html'; // Redirect to vendor dashboard
+                    } else {
+                        errorDiv.textContent = 'Invalid credentials!';
+                    }
+                } else {
+                    errorDiv.textContent = 'Invalid role!';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

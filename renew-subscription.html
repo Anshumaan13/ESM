@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Renew Subscription</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 60%;
+            margin: 50px auto;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .form-group input, .form-group button {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+        }
+
+        .form-group button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Renew Vendor Subscription</h1>
+        <div class="section">
+            <form id="renewSubscriptionForm">
+                <div class="form-group">
+                    <label for="vendorName">Vendor Name:</label>
+                    <input type="text" id="vendorName" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="daysToRenew">Number of Days to Renew:</label>
+                    <input type="number" id="daysToRenew" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Renew Subscription</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const vendorName = getQueryParam('vendorName');
+            const subscriptionDays = getQueryParam('subscriptionDays');
+
+            document.getElementById('vendorName').value = vendorName;
+
+            document.getElementById('renewSubscriptionForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const daysToRenew = parseInt(document.getElementById('daysToRenew').value, 10);
+
+                const vendors = JSON.parse(localStorage.getItem('vendors')) || [];
+                const updatedVendors = vendors.map(vendor => {
+                    if (vendor.name === vendorName) {
+                        vendor.subscriptionDays += daysToRenew;
+                        vendor.subscriptionDate = new Date().toISOString().split('T')[0]; // renew from today
+                        return vendor;
+                    }
+                    return vendor;
+                });
+
+                localStorage.setItem('vendors', JSON.stringify(updatedVendors));
+                alert('Subscription renewed for ' + vendorName);
+                window.location.href = 'admin-dashboard.html'; // Redirect to admin dashboard
+            });
+        });
+    </script>
+</body>
+</html>

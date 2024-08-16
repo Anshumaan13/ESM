@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin PIN</title>
+    <style>
+        /* Same styles as before */
+        .container {
+            width: 300px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 50px auto;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .error {
+            color: red;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Enter Security PIN</h1>
+        <div class="input-group">
+            <input type="password" id="pin" placeholder="Security PIN" required>
+        </div>
+        <button id="verifyPin">Verify</button>
+        <a href="logout.html" class="button">Logout</a>
+        <div id="error" class="error"></div>
+    </div>
+
+    <script>
+        document.getElementById('verifyPin').addEventListener('click', function() {
+            const pin = document.getElementById('pin').value;
+            const errorDiv = document.getElementById('error');
+
+            errorDiv.textContent = '';
+
+            if (pin === '1234') { // Replace with actual PIN
+                window.location.href = 'admin-dashboard.html'; // Redirect to admin dashboard
+            } else {
+                errorDiv.textContent = 'Invalid PIN!';
+            }
+        });
+    </script>
+</body>
+</html>
