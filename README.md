@@ -1,27 +1,42 @@
 # ESM
 
-(Short description or tagline here—for example: "A simple front-end prototype for an e-commerce flow.")
+A front-end project for an Event & Service Management (ESM) platform.  
+This repository contains static HTML, CSS, and JavaScript files for managing users, vendors, admins, orders, and events.
 
-## Overview
+---
 
-Briefly describe what this project is. For instance:
-- Is this a static front-end demo?
-- Is it a template for an e-commerce UI?
-- What technologies are used (HTML, JavaScript, localStorage, etc.)?
+## 🚀 Features
 
-## File Structure
+- **User Side**
+  - Browse products and vendors
+  - Add items to cart and checkout
+  - Track order status
+  - Manage account and preferences
+- **Vendor Side**
+  - Vendor dashboard for managing services
+  - Add and manage product listings
+  - Categorized vendor services (catering, decoration, etc.)
+- **Admin Side**
+  - Manage vendors and products
+  - System maintenance
+  - Subscription management
+- **Utility Pages**
+  - Local storage initialization
+  - Event guest list management
 
-- `index.html`: Landing or main product page
-- `cart.html`: Shopping cart interface
-- `checkout.html`: Payment or order confirmation step
-- `admin-dashboard.html`: Admin control panel view
-- `add-new-item.html`: Page to create or list new products
-- (and any others like `admin-maintenance.html`, etc.)
+---
 
-## How to Run
 
-Explain how to test or view the project:
-```bash
-# Option 1: Open files directly in browser
-# Option 2: Serve via a simple HTTP server (e.g., Python's)
-python3 -m http.server 8000
+## 🛠️ Technologies Used
+
+- **HTML5** — Static page structure
+- **CSS3** — Styling and layout
+- **JavaScript (Vanilla)** — Interactivity, form handling, localStorage
+
+---
+
+## ▶️ How to Run
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Anshumaan13/ESM.git
